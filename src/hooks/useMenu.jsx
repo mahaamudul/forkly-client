@@ -1,23 +1,38 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "./useAxiosPublic";
 
+const normalizeMenu = (items) =>
+    items.map((item, index) => ({
+        ...item,
+        _id: item._id || `local-menu-${item.category}-${index}`,
+    }));
 
 const useMenu = () => {
+    const axiosPublic = useAxiosPublic();
+    const {data: menu = [], isPending: loading, refetch} = useQuery({
+        queryKey: ['menu'], 
+        queryFn: async() =>{
+            try {
+                const res = await axiosPublic.get('/menu');
+                if (Array.isArray(res.data) && res.data.length > 0) {
+                    return normalizeMenu(res.data);
+                }
+            } catch {
+                // Fall back to bundled demo data when the API or database is offline.
+            }
 
-    const [loading,setLoading]=useState(false)
-    const [menu,setMenu]=useState([])
+            const fallbackRes = await fetch('/menu.json');
+            if (!fallbackRes.ok) {
+                throw new Error('Menu data is unavailable');
+            }
+
+            const fallbackMenu = await fallbackRes.json();
+            return normalizeMenu(fallbackMenu);
+        }
+    })
 
 
-    useEffect(()=>{
-        setLoading(true)
-        fetch('http://localhost:5000/menu')
-        .then(res=>res.json())
-        .then(data=>{
-            
-            setMenu(data)
-            setLoading(true)
-        })
-    },[])
-    return [menu]
-};
+    return [menu, loading, refetch]
+}
 
 export default useMenu;

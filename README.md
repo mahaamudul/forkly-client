@@ -1,8 +1,14 @@
-# React + Vite
+# Bistro Boss Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React/Vite client for the Bistro Boss restaurant app.
 
-Currently, two official plugins are available:
+## Scripts
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+npm run dev
+npm run lint
+npm run build
+npm run preview
+```
+
+The client expects the API at `VITE_API_BASE_URL`, falling back to `http://localhost:5000` for local development.

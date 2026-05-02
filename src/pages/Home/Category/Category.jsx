@@ -12,6 +12,14 @@ import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 
+const categories = [
+  { name: "salads", image: categorySlide1 },
+  { name: "pizza", image: categorySlide2 },
+  { name: "dessert", image: categorySlide3 },
+  { name: "cake", image: categorySlide4 },
+  { name: "salads", image: categorySlide5 },
+];
+
 const Category = () => {
   return (
     <section>
@@ -24,45 +32,30 @@ const Category = () => {
         </SectionTitle>
       
       <Swiper
-        slidesPerView={4}
+        slidesPerView={1}
         spaceBetween={30}
-        centeredSlides={true}
+        breakpoints={{
+          640: { slidesPerView: 2 },
+          1024: { slidesPerView: 4 },
+        }}
         pagination={{
           clickable: true,
         }}
         modules={[Pagination]}
         className="mySwiper"
       >
-        <SwiperSlide>
-          <img className="rounded-md" src={categorySlide1} alt="" />
-          <h4 className="lg:text-3xl text-xl uppercase   lg:-mt-24 -mt-14 text-center font-bold text-white lg:mr-16 mr-2">
-            salads
-          </h4>
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-md" src={categorySlide2} alt="" />
-          <h4 className="lg:text-3xl text-xl uppercase  lg:-mt-24 -mt-14 text-center font-bold text-white lg:mr-16 mr-2">
-            pizza
-          </h4>
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-md" src={categorySlide3} alt="" />
-          <h4 className="lg:text-3xl text-xl uppercase  lg:-mt-24 -mt-14 text-center font-bold text-white lg:mr-16 mr-2">
-            desert
-          </h4>
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-md" src={categorySlide4} alt="" />
-          <h4 className="lg:text-3xl text-xl uppercase  lg:-mt-24 -mt-14 text-center font-bold text-white lg:mr-16 mr-2">
-            cake
-          </h4>
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-md" src={categorySlide5} alt="" />
-          <h4 className="lg:text-3xl text-xl uppercase lg:-mt-24 -mt-14 text-center font-bold text-white lg:mr-16 mr-2">
-            salads
-          </h4>
-        </SwiperSlide>
+        {categories.map((category) => (
+          <SwiperSlide key={`${category.name}-${category.image}`}>
+            <div className="relative overflow-hidden rounded-md">
+              <img className="aspect-[4/5] w-full object-cover" src={category.image} alt={category.name} />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                <h4 className="text-center text-xl lg:text-3xl uppercase font-bold text-white">
+                  {category.name}
+                </h4>
+              </div>
+            </div>
+          </SwiperSlide>
+        ))}
       </Swiper>
     </section>
   );

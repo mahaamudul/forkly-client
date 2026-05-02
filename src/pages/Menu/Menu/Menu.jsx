@@ -6,7 +6,7 @@ import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 import MenuCategory from "../MenuCategory/MenuCategory";
 import useMenu from "../../../hooks/useMenu";
 
-import desertImg from '../../../assets/menu/dessert-bg.jpeg'
+import dessertImg from '../../../assets/menu/dessert-bg.jpeg'
 import pizzaImg from '../../../assets/menu/pizza-bg.jpg'
 import saladImg from '../../../assets/menu/salad-bg.jpg'
 import soupImg from '../../../assets/menu/soup-bg.jpg'
@@ -14,7 +14,6 @@ import { Link } from "react-router-dom";
 
 const Menu = () => {
   const [menu] = useMenu();
-  console.log(menu);
 
   const soup=menu.filter(item=> item.category==='soup')
   const salad=menu.filter(item=> item.category==='salad')
@@ -35,7 +34,7 @@ const Menu = () => {
         img={menuCover}
         title={"our menu"}
         subTitle={
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus dicta ullam magnam nam esse distinctio nulla eius hic vitae sunt."
+          "Discover chef-crafted favorites, seasonal specials, and comforting classics made fresh for every table."
         }
       ></Cover>
       <SectionTitle
@@ -49,17 +48,17 @@ const Menu = () => {
 
       <MenuCategory items={offered}> </MenuCategory>
 
-      {/* desert */}
+      {/* dessert */}
       <Cover
-        img={desertImg}
-        title={"desert"}
+        img={dessertImg}
+        title={"dessert"}
         subTitle={
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus dicta ullam magnam nam esse distinctio nulla eius hic vitae sunt."
+          "Sweet finishes with rich flavors, playful textures, and a little extra celebration in every bite."
         }
       ></Cover>
       <SectionTitle
-      heading={'desert items'}
-      subHeading={'Supper Desert Items'}
+      heading={'dessert items'}
+      subHeading={'Sweet dessert items'}
       
       >
 
@@ -73,12 +72,12 @@ const Menu = () => {
         img={pizzaImg}
         title={"pizza"}
         subTitle={
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus dicta ullam magnam nam esse distinctio nulla eius hic vitae sunt."
+          "Crisp crusts, bright toppings, and warm slices made for sharing."
         }
       ></Cover>
       <SectionTitle
       heading={'pizza items'}
-      subHeading={'Supper pizza Items'}
+      subHeading={'Super pizza items'}
       
       >
 
@@ -92,12 +91,12 @@ const Menu = () => {
         img={saladImg}
         title={"salad"}
         subTitle={
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus dicta ullam magnam nam esse distinctio nulla eius hic vitae sunt."
+          "Fresh greens, balanced dressings, and colorful plates for lighter cravings."
         }
       ></Cover>
       <SectionTitle
       heading={'salad items'}
-      subHeading={'Supper salad Items'}
+      subHeading={'Super salad items'}
       
       >
 
@@ -111,12 +110,12 @@ const Menu = () => {
         img={soupImg}
         title={"soup"}
         subTitle={
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus dicta ullam magnam nam esse distinctio nulla eius hic vitae sunt."
+          "Comforting bowls with layered aromatics, slow-simmered flavor, and a cozy finish."
         }
       ></Cover>
       <SectionTitle
       heading={'soup items'}
-      subHeading={'Supper soup Items'}
+      subHeading={'Super soup items'}
       
       >
 

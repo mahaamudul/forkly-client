@@ -8,7 +8,6 @@ import useMenu from '../../../hooks/useMenu';
 const PopularMenu = () => {
 
     const [menu]=useMenu()
-    console.log(menu);
     const popularItems=menu.filter(item=> item.category==='popular')
 
     // const [menu,setMenu]=useState([])
@@ -28,7 +27,7 @@ const PopularMenu = () => {
             heading={'from our menu'}
             subHeading={'check it out'}
             ></SectionTitle>
-            <div className='grid lg:grid-cols-2 gap-6 px-6 grid-cols-1'>
+            <div className='grid lg:grid-cols-2 gap-6 grid-cols-1'>
                 {
                     popularItems.map(item=> <PopularItem key={item._id} item={item}></PopularItem>)
                 }
