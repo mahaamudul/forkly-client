@@ -4,6 +4,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useCart from "../../../hooks/useCart";
 import { AUthContext } from "../../../provider/AuthProvider";
 import Swal from "sweetalert2";
+import LoadingState from "../../../components/Loading/LoadingState";
 
 const CheckOutForm = () => {
     const { user } = useContext(AUthContext);
@@ -12,14 +13,16 @@ const CheckOutForm = () => {
   const elements = useElements();
 
   const axiosSecure=useAxiosSecure()
-  const [cart,refetch]=useCart()
+  const [cart,refetch, cartLoading]=useCart()
   const totalPrice=cart.reduce((total,item)=>total+ item.price,0)
   const[clientSecret,setClientSecret]=useState()
+  const [isPreparingPayment, setIsPreparingPayment] = useState(false);
 
   const [transactionId,setTransactionId]=useState('')
 
   useEffect(()=>{
     if(totalPrice>0){
+        setIsPreparingPayment(true);
         axiosSecure.post('/create-payment-intent',{
             price:totalPrice
         })
@@ -27,6 +30,7 @@ const CheckOutForm = () => {
             setClientSecret(res.data.clientSecret)
     
         })
+        .finally(() => setIsPreparingPayment(false))
     }
   },[axiosSecure,totalPrice])
   
@@ -92,9 +96,16 @@ const CheckOutForm = () => {
         }
     }
   };
+  if (cartLoading) {
+    return <LoadingState label="Loading cart for payment" />;
+  }
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
+        {isPreparingPayment ? (
+          <LoadingState label="Preparing secure payment" variant="inline" />
+        ) : null}
         <CardElement
           options={{
             style: {

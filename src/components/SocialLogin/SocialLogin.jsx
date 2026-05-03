@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 import { AUthContext } from "../../provider/AuthProvider";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
@@ -13,8 +13,10 @@ const SocialLogin = () => {
     const navigate=useNavigate()
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleGoogleSignIn=()=>{
+        setIsLoading(true);
         googleSignIn()
         .then(res=>{
             const userInfo={
@@ -34,15 +36,18 @@ const SocialLogin = () => {
                 text: error.message,
                 icon: "error",
             });
-        });
+        })
+        .finally(() => setIsLoading(false));
     }
     return (
         <div>
             <button
                 onClick={handleGoogleSignIn}
+                disabled={isLoading}
                 className="btn h-12 w-full rounded-md border-[#d9c8b4] bg-white text-neutral hover:border-orange-300 hover:bg-orange-50"
             >
-                <span><FaGoogle></FaGoogle></span> Continue with Google
+                <span><FaGoogle></FaGoogle></span>
+                {isLoading ? "Connecting..." : "Continue with Google"}
             </button>
         </div>
     );

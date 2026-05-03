@@ -26,7 +26,7 @@ const Contact = () => {
     },
     {
       label: "Email",
-      value: "hello@bistroboss.test",
+      value: "hello@forkly.test",
       icon: <FaEnvelope />,
     },
     {
@@ -42,38 +42,40 @@ const Contact = () => {
   ];
 
   return (
-    <div>
+    <div className="bg-white">
       <Helmet>
-        <title>Bistro Boss | Contact</title>
+        <title>Forkly | Contact</title>
       </Helmet>
       <Cover
         img={contactCover}
         title="Contact Us"
-        subTitle="Questions, events, reservations, or feedback: send a note and the Bistro Boss team will get back to you."
+        subTitle="Questions, events, reservations, or feedback: send a note and the Forkly team will get back to you."
       />
-      <SectionTitle heading="Contact Details" subHeading="Reach the team" />
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {contactItems.map((item) => (
-          <div key={item.label} className="rounded-lg bg-base-200 p-6 text-center">
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-orange-300 text-xl text-black">
-              {item.icon}
+      <section className="content-shell section-space">
+        <SectionTitle heading="Contact Details" subHeading="Reach the team" />
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {contactItems.map((item) => (
+            <div key={item.label} className="rounded-lg bg-base-200 p-6 text-center">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-orange-300 text-xl text-black">
+                {item.icon}
+              </div>
+              <h3 className="text-xl font-semibold">{item.label}</h3>
+              <p className="mt-2 break-words text-slate-600">{item.value}</p>
             </div>
-            <h3 className="text-xl font-semibold">{item.label}</h3>
-            <p className="mt-2 text-slate-600">{item.value}</p>
-          </div>
-        ))}
-      </div>
-      <div className="mx-auto mt-10 max-w-3xl">
-        <form onSubmit={handleSubmit} className="grid gap-4 rounded-lg bg-base-200 p-6">
-          <div className="grid gap-4 md:grid-cols-2">
-            <input className="input input-bordered" placeholder="Name" required />
-            <input className="input input-bordered" type="email" placeholder="Email" required />
-          </div>
-          <input className="input input-bordered" placeholder="Subject" required />
-          <textarea className="textarea textarea-bordered min-h-36" placeholder="Message" required />
-          <button className="btn bg-orange-400 text-black">Send Message</button>
-        </form>
-      </div>
+          ))}
+        </div>
+        <div className="mx-auto mt-10 max-w-3xl">
+          <form onSubmit={handleSubmit} className="grid gap-4 rounded-lg bg-base-200 p-5 md:p-6">
+            <div className="grid gap-4 md:grid-cols-2">
+              <input className="input input-bordered w-full" placeholder="Name" required />
+              <input className="input input-bordered w-full" type="email" placeholder="Email" required />
+            </div>
+            <input className="input input-bordered w-full" placeholder="Subject" required />
+            <textarea className="textarea textarea-bordered min-h-36 w-full" placeholder="Message" required />
+            <button className="btn bg-orange-400 text-black">Send Message</button>
+          </form>
+        </div>
+      </section>
     </div>
   );
 };

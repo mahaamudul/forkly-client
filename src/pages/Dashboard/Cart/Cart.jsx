@@ -5,9 +5,10 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AUthContext } from "../../../provider/AuthProvider";
 import { removeLocalCartItem } from "../../../utils/localCart";
+import LoadingState from "../../../components/Loading/LoadingState";
 
 const Cart = () => {
-  const [cart,refetch] = useCart();
+  const [cart,refetch, cartLoading] = useCart();
   const totalPrice = cart.reduce((total, item) => total + item.price, 0);
   const axiosSecure = useAxiosSecure();
   const { user } = useContext(AUthContext);
@@ -47,11 +48,15 @@ const Cart = () => {
       }
     });
   };
+  if (cartLoading) {
+    return <LoadingState label="Loading cart" />;
+  }
+
   return (
     <div>
-      <div className="flex justify-evenly items-center mb-8">
-        <h1 className="text-3xl font-semibold ">Total Order:{cart.length}</h1>
-        <h1 className="text-4xl font-semibold">Price:${totalPrice.toFixed(2)}</h1>
+      <div className="mb-8 flex flex-col gap-4 rounded-lg bg-base-200 p-5 md:flex-row md:items-center md:justify-between">
+        <h1 className="text-2xl font-semibold md:text-3xl">Total Order: {cart.length}</h1>
+        <h1 className="text-3xl font-semibold md:text-4xl">Price: ${totalPrice.toFixed(2)}</h1>
         
         {cart.length? <Link to='/dashboard/payment' className="btn bg-orange-300 text-black">Pay</Link>: <button disabled={true}  className="btn bg-orange-300 text-black">Pay</button> }
 

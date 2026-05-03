@@ -1,6 +1,6 @@
-# Bistro Boss Client
+# Forkly Client
 
-React/Vite client for the Bistro Boss restaurant app.
+React/Vite client for the Forkly restaurant app.
 
 ## Scripts
 

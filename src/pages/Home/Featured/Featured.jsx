@@ -5,23 +5,25 @@ import './Featured.css'
 
 const Featured = () => {
     return (
-        <div className="fetured bg-fixed  ">
-            <SectionTitle
-                heading={'featured item'}
-                subHeading={'check it out'}
-            ></SectionTitle>
-            <div className="md:flex justify-center items-center gap-6 py-10 pb-16 text-white">
-                <div>
-                    <img className="rounded-md zs-10"  src={feturedImage} alt="" />
-                </div>
-                <div className="w-full">
-                    <h4>May 18, 2026</h4>
-                    <h3 className="uppercase">Chef&apos;s seasonal table</h3>
-                    <p>Fresh ingredients, bold sauces, and a balanced plate built around the flavors guests keep coming back for.</p>
-                    <button className="btn btn-outline border-0 border-b-4 mt-4 text-white">Read More</button>
+        <section className="fetured bg-fixed">
+            <div className="content-shell section-space text-white">
+                <SectionTitle
+                    heading={'featured item'}
+                    subHeading={'check it out'}
+                ></SectionTitle>
+                <div className="flex flex-col items-center gap-6 py-4 text-white md:flex-row md:gap-8">
+                    <div className="w-full md:w-[44%]">
+                        <img className="w-full rounded-md"  src={feturedImage} alt="Chef's seasonal table" />
+                    </div>
+                    <div className="w-full md:w-[56%]">
+                        <h4>May 18, 2026</h4>
+                        <h3 className="mt-2 text-2xl uppercase md:text-3xl">Chef&apos;s seasonal table</h3>
+                        <p className="mt-3 leading-7">Fresh ingredients, bold sauces, and a balanced plate built around the flavors guests keep coming back for.</p>
+                        <button className="btn btn-outline mt-4 border-0 border-b-4 text-white">Read More</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
     );
 };
 

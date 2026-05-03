@@ -3,6 +3,7 @@ import useAdmin from "../hooks/useAdmin";
 
 import { useContext } from "react";
 import { AUthContext } from "../provider/AuthProvider";
+import LoadingState from "../components/Loading/LoadingState";
 
 
 const AdminRoute = ({children}) => {
@@ -11,7 +12,7 @@ const AdminRoute = ({children}) => {
     const location = useLocation();
 
     if(loading || isAdminLoading){
-        return <progress className="progress w-56"></progress>
+        return <LoadingState label="Checking admin access" variant="page" />
     }
 
     if (user && isAdmin) {

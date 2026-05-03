@@ -10,7 +10,7 @@ const useCart = () => {
   const {user}=useContext(AUthContext)
 
     
-    const {refetch,data : cart=[]}=useQuery({
+    const {refetch,data : cart=[], isPending}=useQuery({
         queryKey: ['cart',user?.email],
         enabled: !!user?.email,
         queryFn: async()=>{
@@ -24,7 +24,7 @@ const useCart = () => {
             }
         }
     })
-    return [cart,refetch]
+    return [cart,refetch,isPending]
 };
 
 export default useCart;

@@ -3,6 +3,7 @@ import Cover from "../../Shared/Cover/Cover";
 import menuCover from "../../../assets/menu/banner3.jpg";
 // import { useState } from "react";
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
+import LoadingState from "../../../components/Loading/LoadingState";
 import MenuCategory from "../MenuCategory/MenuCategory";
 import useMenu from "../../../hooks/useMenu";
 
@@ -13,7 +14,7 @@ import soupImg from '../../../assets/menu/soup-bg.jpg'
 import { Link } from "react-router-dom";
 
 const Menu = () => {
-  const [menu] = useMenu();
+  const [menu, loading] = useMenu();
 
   const soup=menu.filter(item=> item.category==='soup')
   const salad=menu.filter(item=> item.category==='salad')
@@ -24,10 +25,10 @@ const Menu = () => {
 
 
   return (
-    <div>
+    <div className="bg-white">
       <div>
         <Helmet>
-          <title>Bistro Boss | Menu</title>
+          <title>Forkly | Menu</title>
         </Helmet>
       </div>
       <Cover
@@ -37,16 +38,24 @@ const Menu = () => {
           "Discover chef-crafted favorites, seasonal specials, and comforting classics made fresh for every table."
         }
       ></Cover>
-      <SectionTitle
-      heading={'todays offer'}
-      subHeading={'lets try our offer items'}
-      
-      >
+      {loading ? (
+        <section className="content-shell section-space">
+          <LoadingState label="Loading menu" />
+        </section>
+      ) : (
+        <>
+      <section className="content-shell section-space">
+        <SectionTitle
+        heading={'todays offer'}
+        subHeading={'lets try our offer items'}
+        
+        >
 
-      </SectionTitle>
+        </SectionTitle>
 
 
-      <MenuCategory items={offered}> </MenuCategory>
+        <MenuCategory items={offered}> </MenuCategory>
+      </section>
 
       {/* dessert */}
       <Cover
@@ -56,17 +65,19 @@ const Menu = () => {
           "Sweet finishes with rich flavors, playful textures, and a little extra celebration in every bite."
         }
       ></Cover>
-      <SectionTitle
-      heading={'dessert items'}
-      subHeading={'Sweet dessert items'}
-      
-      >
+      <section className="content-shell section-space">
+        <SectionTitle
+        heading={'dessert items'}
+        subHeading={'Sweet dessert items'}
+        
+        >
 
-      </SectionTitle>
-      <MenuCategory items={dessert}> </MenuCategory>
-      <div className=" text-center">
-      <Link to='/order/dessert' className="btn btn-outline text-center   uppercase mx-auto mb-6 border-0  border-b-4 mt-4 text-slate-900">Order Now</Link>
-      </div>
+        </SectionTitle>
+        <MenuCategory items={dessert}> </MenuCategory>
+        <div className="mt-8 text-center">
+        <Link to='/order/dessert' className="btn btn-outline uppercase mx-auto border-0 border-b-4 text-slate-900">Order Now</Link>
+        </div>
+      </section>
       {/* pizza */}
       <Cover
         img={pizzaImg}
@@ -75,17 +86,19 @@ const Menu = () => {
           "Crisp crusts, bright toppings, and warm slices made for sharing."
         }
       ></Cover>
-      <SectionTitle
-      heading={'pizza items'}
-      subHeading={'Super pizza items'}
-      
-      >
+      <section className="content-shell section-space">
+        <SectionTitle
+        heading={'pizza items'}
+        subHeading={'Super pizza items'}
+        
+        >
 
-      </SectionTitle>
-      <MenuCategory items={pizza}> </MenuCategory>
-      <div className=" text-center">
-      <Link to='/order/pizza' className="btn btn-outline text-center   uppercase mx-auto mb-6 border-0  border-b-4 mt-4 text-slate-900">Order Now</Link>
-      </div>
+        </SectionTitle>
+        <MenuCategory items={pizza}> </MenuCategory>
+        <div className="mt-8 text-center">
+        <Link to='/order/pizza' className="btn btn-outline uppercase mx-auto border-0 border-b-4 text-slate-900">Order Now</Link>
+        </div>
+      </section>
       {/* salad*/}
       <Cover
         img={saladImg}
@@ -94,17 +107,19 @@ const Menu = () => {
           "Fresh greens, balanced dressings, and colorful plates for lighter cravings."
         }
       ></Cover>
-      <SectionTitle
-      heading={'salad items'}
-      subHeading={'Super salad items'}
-      
-      >
+      <section className="content-shell section-space">
+        <SectionTitle
+        heading={'salad items'}
+        subHeading={'Super salad items'}
+        
+        >
 
-      </SectionTitle>
-      <MenuCategory items={salad}> </MenuCategory>
-      <div className=" text-center">
-      <Link to='/order/salad' className="btn btn-outline text-center   uppercase mx-auto mb-6 border-0  border-b-4 mt-4 text-slate-900">Order Now</Link>
-      </div>
+        </SectionTitle>
+        <MenuCategory items={salad}> </MenuCategory>
+        <div className="mt-8 text-center">
+        <Link to='/order/salad' className="btn btn-outline uppercase mx-auto border-0 border-b-4 text-slate-900">Order Now</Link>
+        </div>
+      </section>
       {/* soup*/}
       <Cover
         img={soupImg}
@@ -113,17 +128,21 @@ const Menu = () => {
           "Comforting bowls with layered aromatics, slow-simmered flavor, and a cozy finish."
         }
       ></Cover>
-      <SectionTitle
-      heading={'soup items'}
-      subHeading={'Super soup items'}
-      
-      >
+      <section className="content-shell section-space">
+        <SectionTitle
+        heading={'soup items'}
+        subHeading={'Super soup items'}
+        
+        >
 
-      </SectionTitle>
-      <MenuCategory items={soup}> </MenuCategory>
-      <div className=" text-center">
-      <Link to='/order/soup' className="btn btn-outline text-center   uppercase mx-auto mb-6 border-0  border-b-4 mt-4 text-slate-900">Order Now</Link>
-      </div>
+        </SectionTitle>
+        <MenuCategory items={soup}> </MenuCategory>
+        <div className="mt-8 text-center">
+        <Link to='/order/soup' className="btn btn-outline uppercase mx-auto border-0 border-b-4 text-slate-900">Order Now</Link>
+        </div>
+      </section>
+      </>
+      )}
 
 
     </div>

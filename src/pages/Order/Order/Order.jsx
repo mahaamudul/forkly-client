@@ -28,7 +28,7 @@ const Order = () => {
   return (
     <div className="bg-base-100 pb-12">
       <Helmet>
-        <title>Bistro Boss | Order Food</title>
+        <title>Forkly | Order Food</title>
       </Helmet>
 
       <section
@@ -36,11 +36,11 @@ const Order = () => {
         style={{ backgroundImage: `url(${orderCoverImage})` }}
       >
         <div className="absolute inset-0 bg-neutral/70"></div>
-        <div className="relative mx-auto w-full max-w-screen-2xl text-white">
+        <div className="content-shell relative w-full text-white">
           <p className="mb-3 text-sm font-semibold uppercase text-orange-300">
             Fresh from 10 AM to 11 PM
           </p>
-          <h1 className="max-w-2xl font-cinzel text-4xl font-bold uppercase md:text-6xl">
+          <h1 className="max-w-2xl text-4xl font-bold uppercase md:text-6xl">
             Order Food
           </h1>
           <p className="mt-4 max-w-2xl text-base text-white/85 md:text-lg">
@@ -50,13 +50,13 @@ const Order = () => {
         </div>
       </section>
 
-      <section className="mx-auto max-w-screen-2xl">
-        <div className="py-8">
+      <section className="content-shell pb-12 pt-5 md:pb-14 md:pt-6">
+        <div className="pb-4 md:pb-5">
           <p className="text-sm font-semibold uppercase text-orange-400">
             Now browsing
           </p>
           <div className="flex flex-col justify-between gap-2 md:flex-row md:items-end">
-            <h2 className="font-cinzel text-3xl font-bold uppercase text-neutral md:text-4xl">
+            <h2 className="text-3xl font-bold uppercase text-neutral md:text-4xl">
               {activeCategory}
             </h2>
             <p className="text-slate-600">
@@ -70,20 +70,20 @@ const Order = () => {
           onSelect={(index) => navigate(`/order/${categories[index]}`)}
           selectedTabClassName="bg-orange-400 text-neutral shadow"
         >
-          <TabList className="sticky top-16 z-10 mb-8 flex gap-2 overflow-x-auto rounded-lg border border-orange-200 bg-base-100 p-2 shadow-sm">
-          <Tab className="cursor-pointer rounded-md px-5 py-3 text-sm font-semibold uppercase text-neutral outline-none transition hover:bg-orange-100">
+          <TabList className="sticky top-20 z-10 mb-6 flex gap-2 overflow-x-auto rounded-lg border border-orange-200 bg-base-100 p-2 shadow-sm md:top-24">
+          <Tab className="cursor-pointer whitespace-nowrap rounded-md px-4 py-3 text-sm font-semibold uppercase text-neutral outline-none transition hover:bg-orange-100 md:px-5">
             Salad
           </Tab>
-          <Tab className="cursor-pointer rounded-md px-5 py-3 text-sm font-semibold uppercase text-neutral outline-none transition hover:bg-orange-100">
+          <Tab className="cursor-pointer whitespace-nowrap rounded-md px-4 py-3 text-sm font-semibold uppercase text-neutral outline-none transition hover:bg-orange-100 md:px-5">
             Pizza
           </Tab>
-          <Tab className="cursor-pointer rounded-md px-5 py-3 text-sm font-semibold uppercase text-neutral outline-none transition hover:bg-orange-100">
+          <Tab className="cursor-pointer whitespace-nowrap rounded-md px-4 py-3 text-sm font-semibold uppercase text-neutral outline-none transition hover:bg-orange-100 md:px-5">
             Soup
           </Tab>
-          <Tab className="cursor-pointer rounded-md px-5 py-3 text-sm font-semibold uppercase text-neutral outline-none transition hover:bg-orange-100">
+          <Tab className="cursor-pointer whitespace-nowrap rounded-md px-4 py-3 text-sm font-semibold uppercase text-neutral outline-none transition hover:bg-orange-100 md:px-5">
             Dessert
           </Tab>
-          <Tab className="cursor-pointer rounded-md px-5 py-3 text-sm font-semibold uppercase text-neutral outline-none transition hover:bg-orange-100">
+          <Tab className="cursor-pointer whitespace-nowrap rounded-md px-4 py-3 text-sm font-semibold uppercase text-neutral outline-none transition hover:bg-orange-100 md:px-5">
             Drinks
           </Tab>
         </TabList>

@@ -11,7 +11,12 @@ const AddReview = () => {
   const [rating, setRating] = useState(5);
   const { user } = useContext(AUthContext);
   const axiosSecure = useAxiosSecure();
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = useForm();
 
   const onSubmit = async (data) => {
     const review = {
@@ -22,16 +27,25 @@ const AddReview = () => {
       createdAt: new Date().toISOString(),
     };
 
-    const res = await axiosSecure.post("/reviews", review);
-    if (res.data.insertedId) {
-      reset();
-      setRating(5);
+    try {
+      const res = await axiosSecure.post("/reviews", review);
+      if (res.data.insertedId) {
+        reset();
+        setRating(5);
+        Swal.fire({
+          position: "top-end",
+            icon: "success",
+            title: "Thanks for sharing your review.",
+            text: "An admin will approve it before it appears on the homepage.",
+            showConfirmButton: false,
+            timer: 1800,
+          });
+      }
+    } catch (error) {
       Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Thanks for sharing your review.",
-        showConfirmButton: false,
-        timer: 1500,
+        icon: "error",
+        title: "Review failed",
+        text: error.response?.data?.message || "Could not save your review.",
       });
     }
   };
@@ -56,7 +70,9 @@ const AddReview = () => {
             {...register("details", { required: true })}
           />
         </div>
-        <button className="btn bg-orange-400 text-black">Submit Review</button>
+        <button disabled={isSubmitting} className="btn bg-orange-400 text-black">
+          {isSubmitting ? "Submitting..." : "Submit Review"}
+        </button>
       </form>
     </div>
   );

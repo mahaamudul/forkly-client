@@ -10,7 +10,7 @@ const baseOptions = {
   reverseButtons: true,
   customClass: {
     popup: "rounded-lg",
-    title: "font-cinzel",
+    title: "font-sans",
     confirmButton: "rounded-md",
     cancelButton: "rounded-md",
   },

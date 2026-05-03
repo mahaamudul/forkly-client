@@ -18,66 +18,55 @@ const Register = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const { name, email, password, photoURL } = data;
     const userInfo = { name, email, photoURL };
 
-    createUser(email, password)
-      .then((result) => {
-        if (!result.user) {
-          return;
-        }
+    try {
+      const result = await createUser(email, password);
+      if (!result.user) return;
 
-        userUpdateProfile(name, photoURL)
-          .then(() => {
-            axiosPublic.post("/users", userInfo).then(async (res) => {
-              if (res.data.insertedId || res.data.message === "user already exists") {
-                await ensureAccessToken(email);
-                Swal.fire({
-                  title: "Account created",
-                  text: "Your Bistro Boss profile is ready for orders and reservations.",
-                  icon: "success",
-                });
-                reset();
-                navigate("/");
-              }
-            });
-          })
-          .catch((err) => {
-            Swal.fire({
-              title: "Profile update failed",
-              text: err.message,
-              icon: "error",
-            });
-          });
-      })
-      .catch((err) => {
+      await userUpdateProfile(name, photoURL);
+      const res = await axiosPublic.post("/users", userInfo);
+
+      if (res.data.insertedId || res.data.message === "user already exists") {
+        await ensureAccessToken(email);
         Swal.fire({
-          title: "Sign up failed",
-          text: err.message,
-          icon: "error",
+          title: "Account created",
+          text: "Your Forkly profile is ready for orders and reservations.",
+          icon: "success",
         });
+        reset();
+        navigate("/");
+      }
+    } catch (err) {
+      Swal.fire({
+        title: "Sign up failed",
+        text: err.message,
+        icon: "error",
       });
+    }
   };
 
   return (
     <>
       <Helmet>
-        <title>Bistro Boss | Sign Up</title>
+        <title>Forkly | Sign Up</title>
       </Helmet>
 
-      <section className="min-h-screen bg-[#f8f5f0] px-[10px] py-24">
-        <div className="mx-auto grid min-h-[calc(100vh-12rem)] max-w-6xl overflow-hidden rounded-lg border border-[#e8dccb] bg-white shadow-sm lg:grid-cols-[0.95fr_1.05fr]">
+      <section className="min-h-screen bg-[#f8f5f0] py-24">
+        <div className="content-shell">
+          <div className="grid min-h-[calc(100vh-12rem)] overflow-hidden rounded-lg border border-[#e8dccb] bg-white shadow-sm lg:grid-cols-[0.95fr_1.05fr]">
           <div className="flex items-center bg-white">
             <div className="w-full p-6 sm:p-8 lg:p-12">
               <div className="mx-auto max-w-md">
                 <p className="text-sm uppercase tracking-[0.3em] text-orange-500">
-                  Join Bistro Boss
+                  Join Forkly
                 </p>
-                <h1 className="mt-3 font-cinzel text-3xl font-bold text-neutral">
+                <h1 className="mt-3 text-3xl font-bold text-neutral">
                   Create your guest account
                 </h1>
                 <p className="mt-2 text-sm leading-6 text-slate-600">
@@ -124,7 +113,7 @@ const Register = () => {
                     </label>
                     <input
                       type="email"
-                      placeholder="guest@bistroboss.com"
+                      placeholder="guest@forkly.com"
                       className="input h-12 w-full rounded-md border-[#d9c8b4] bg-[#fffdf9] focus:border-orange-400 focus:outline-none"
                       {...register("email", { required: true })}
                     />
@@ -172,9 +161,10 @@ const Register = () => {
 
                   <button
                     type="submit"
+                    disabled={isSubmitting}
                     className="btn h-12 w-full rounded-md border-0 bg-orange-400 text-base font-semibold text-neutral hover:bg-orange-500"
                   >
-                    Create Account
+                    {isSubmitting ? "Creating account..." : "Create Account"}
                   </button>
                 </form>
 
@@ -214,12 +204,12 @@ const Register = () => {
               <div className="flex items-center gap-3">
                 <img
                   src={logo}
-                  alt="Bistro Boss"
+                  alt="Forkly"
                   className="h-11 w-11 rounded-full border border-white/40 object-cover"
                 />
                 <div>
-                  <p className="font-cinzel text-xl font-bold uppercase tracking-[0.2em]">
-                    Bistro Boss
+                  <p className="text-xl font-bold uppercase tracking-[0.2em]">
+                    Forkly
                   </p>
                   <p className="text-sm text-white/80">
                     Crafted meals, thoughtful hosting
@@ -231,16 +221,17 @@ const Register = () => {
                 <p className="mb-3 text-sm uppercase tracking-[0.3em] text-orange-200">
                   Dining membership
                 </p>
-                <h2 className="font-cinzel text-4xl font-bold leading-tight lg:text-5xl">
+                <h2 className="text-4xl font-bold leading-tight lg:text-5xl">
                   Make every next visit easier to book and enjoy.
                 </h2>
                 <p className="mt-4 max-w-lg text-sm leading-7 text-white/85 lg:text-base">
                   One account keeps your orders, payments, and reservations in
-                  one calm place built around the Bistro Boss experience.
+                  one calm place built around the Forkly experience.
                 </p>
               </div>
             </div>
           </div>
+        </div>
         </div>
       </section>
     </>

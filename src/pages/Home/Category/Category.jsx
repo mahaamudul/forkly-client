@@ -22,7 +22,7 @@ const categories = [
 
 const Category = () => {
   return (
-    <section>
+    <section className="content-shell section-space">
       
         <SectionTitle
         heading={"Order Online"}
@@ -33,10 +33,10 @@ const Category = () => {
       
       <Swiper
         slidesPerView={1}
-        spaceBetween={30}
+        spaceBetween={20}
         breakpoints={{
-          640: { slidesPerView: 2 },
-          1024: { slidesPerView: 4 },
+          640: { slidesPerView: 2, spaceBetween: 20 },
+          1024: { slidesPerView: 4, spaceBetween: 24 },
         }}
         pagination={{
           clickable: true,

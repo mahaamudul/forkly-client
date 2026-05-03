@@ -29,6 +29,9 @@ import Reservation from "../pages/Dashboard/Reservation/Reservation";
 import AddReview from "../pages/Dashboard/AddReview/AddReview";
 import MyBookings from "../pages/Dashboard/MyBookings/MyBookings";
 import ManageBookings from "../pages/Dashboard/ManageBookings/ManageBookings";
+import AdminPayments from "../pages/Dashboard/AdminPayments/AdminPayments";
+import ManageReviews from "../pages/Dashboard/ManageReviews/ManageReviews";
+import RestaurantSettings from "../pages/Dashboard/RestaurantSettings/RestaurantSettings";
 import { API_BASE_URL } from "../config/api";
 
 
@@ -135,6 +138,18 @@ import { API_BASE_URL } from "../config/api";
         {
           path: 'manageBookings',
           element: <AdminRoute><ManageBookings></ManageBookings></AdminRoute>
+        },
+        {
+          path: 'adminPayments',
+          element: <AdminRoute><AdminPayments></AdminPayments></AdminRoute>
+        },
+        {
+          path: 'manageReviews',
+          element: <AdminRoute><ManageReviews></ManageReviews></AdminRoute>
+        },
+        {
+          path: 'settings',
+          element: <AdminRoute><RestaurantSettings></RestaurantSettings></AdminRoute>
         },
         {
           path: 'updateItem/:id',

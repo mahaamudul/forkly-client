@@ -1,8 +1,8 @@
 const SectionTitle = ({heading, subHeading}) => {
     return (
-        <div className="md:w-4/12 mx-auto my-10">
-            <p className="text-base text-center text-orange-300 mb-4">---{subHeading}---</p>
-            <p className="uppercase text-center border-y-4 text-2xl md:text-3xl font-bold py-4">{heading}</p>
+        <div className="mx-auto my-10 max-w-2xl">
+            <p className="mb-4 text-center text-sm uppercase tracking-[0.25em] text-orange-300 md:text-base">---{subHeading}---</p>
+            <p className="border-y-4 py-4 text-center text-2xl font-bold uppercase md:text-3xl">{heading}</p>
         </div>
     );
 };

@@ -1,130 +1,208 @@
-import { useLoaderData } from "react-router-dom";
-// import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 import { useForm } from "react-hook-form";
+import { useLoaderData } from "react-router-dom";
+import { FaUtensils } from "react-icons/fa";
 import Swal from "sweetalert2";
-import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import AdminPageHeader from "../../../components/Admin/AdminPageHeader";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import SectionTitle from "../../../components/SectionTitle/SectionTitle";
-import { IMAGE_HOSTING_API } from "../../../config/api";
-
+import { uploadMenuImage } from "../../../utils/uploadMenuImage";
 
 const UpdateItem = () => {
-    const {name, category, recipe, price, image, _id}= useLoaderData();
-    
+  const item = useLoaderData();
+  const { name, category, recipe, price, image, _id, status, featured } = item || {};
 
-    const { register, handleSubmit } = useForm();
-    const axiosPublic = useAxiosPublic();
-    const axiosSecure = useAxiosSecure();
-    const onSubmit = async (data) => {
-        let imageUrl = image;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues: {
+      name,
+      category,
+      price,
+      recipe,
+      status: status || "active",
+      featured: Boolean(featured),
+    },
+  });
 
-        if (data.image?.[0]) {
-            if (!IMAGE_HOSTING_API) {
-                Swal.fire("Image hosting key is missing.");
-                return;
-            }
+  const axiosSecure = useAxiosSecure();
 
-            const imageFile = { image: data.image[0] }
-            const res = await axiosPublic.post(IMAGE_HOSTING_API, imageFile, {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            });
-            if (res.data.success) {
-                imageUrl = res.data.data.display_url;
-            }
-        }
+  const onSubmit = async (data) => {
+    try {
+      let imageUrl = image;
 
-        const menuItem = {
-            name: data.name,
-            category: data.category,
-            price: parseFloat(data.price),
-            recipe: data.recipe,
-            image: imageUrl
-        }
+      if (data.image?.[0]) {
+        imageUrl = await uploadMenuImage(axiosSecure, data.image[0]);
+      }
 
-        const menuRes = await axiosSecure.patch(`/menu/${_id}`, menuItem);
-        if(menuRes.data.modifiedCount > 0){
-            Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: `${data.name} is updated to the menu.`,
-                showConfirmButton: false,
-                timer: 1500
-              });
-        }
-    };
-    
-    
-    return (
-        <div>
-            <SectionTitle heading="Update an Item" subHeading="Refresh info"></SectionTitle>
+      const menuItem = {
+        name: data.name,
+        category: data.category,
+        price: parseFloat(data.price),
+        recipe: data.recipe,
+        image: imageUrl,
+        status: data.status,
+        featured: Boolean(data.featured),
+      };
+
+      const menuRes = await axiosSecure.patch(`/menu/${_id}`, menuItem);
+      if (menuRes.data.modifiedCount > 0) {
+        Swal.fire({
+          icon: "success",
+          title: `${data.name} has been updated.`,
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Update failed",
+        text:
+          error.response?.data?.message ||
+          error.message ||
+          "Could not update the menu item.",
+      });
+    }
+  };
+
+  return (
+    <div className="space-y-8">
+      <AdminPageHeader
+        eyebrow="Menu operations"
+        title="Update Item"
+        description="Refresh an existing menu item without losing its current image unless you upload a new one."
+      />
+
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="rounded-lg border border-orange-200 bg-base-100 p-5 shadow-sm md:p-6"
+      >
+        <div className="grid gap-5">
+          <div>
+            <label className="label">
+              <span className="label-text">Recipe name</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Recipe name"
+              {...register("name", { required: "Recipe name is required" })}
+              className="input input-bordered w-full"
+            />
+            {errors.name ? (
+              <p className="mt-2 text-sm text-red-500">{errors.name.message}</p>
+            ) : null}
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-3">
             <div>
-                
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="form-control w-full my-6">
-                        <label className="label">
-                            <span className="label-text">Recipe Name*</span>
-                        </label>
-                        <input
-                            type="text"
-                            defaultValue={name}
-                            placeholder="Recipe Name"
-                            {...register('name', { required: true })}
-                            required
-                            className="input input-bordered w-full" />
-                    </div>
-                    <div className="flex gap-6">
-                        {/* category */}
-                        <div className="form-control w-full my-6">
-                            <label className="label">
-                                <span className="label-text">Category*</span>
-                            </label>
-                            <select defaultValue={category} {...register('category', { required: true })}
-                                className="select select-bordered w-full">
-                                <option disabled value="default">Select a category</option>
-                                <option value="salad">Salad</option>
-                                <option value="pizza">Pizza</option>
-                                <option value="soup">Soup</option>
-                                <option value="dessert">Dessert</option>
-                                <option value="drinks">Drinks</option>
-                            </select>
-                        </div>
-
-                        {/* price */}
-                        <div className="form-control w-full my-6">
-                            <label className="label">
-                                <span className="label-text">Price*</span>
-                            </label>
-                            <input
-                                type="number"
-                                defaultValue={price}
-                                placeholder="Price"
-                                {...register('price', { required: true })}
-                                className="input input-bordered w-full" />
-                        </div>
-
-                    </div>
-                    {/* recipe details */}
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text">Recipe Details</span>
-                        </label>
-                        <textarea defaultValue={recipe} {...register('recipe')} className="textarea textarea-bordered h-24" placeholder="Bio"></textarea>
-                    </div>
-
-                    <div className="form-control w-full my-6">
-                        <input {...register('image')} type="file" className="file-input w-full max-w-xs" />
-                        <span className="mt-2 text-sm text-slate-500">Leave blank to keep the current image.</span>
-                    </div>
-
-                    <button className="btn">
-                        Update menu Item
-                    </button>
-                </form>
+              <label className="label">
+                <span className="label-text">Category</span>
+              </label>
+              <select
+                {...register("category", { required: true })}
+                className="select select-bordered w-full"
+              >
+                <option value="salad">Salad</option>
+                <option value="pizza">Pizza</option>
+                <option value="soup">Soup</option>
+                <option value="dessert">Dessert</option>
+                <option value="drinks">Drinks</option>
+              </select>
             </div>
+
+            <div>
+              <label className="label">
+                <span className="label-text">Price</span>
+              </label>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                placeholder="Price"
+                {...register("price", {
+                  required: "Price is required",
+                  min: { value: 0, message: "Price must be positive" },
+                })}
+                className="input input-bordered w-full"
+              />
+              {errors.price ? (
+                <p className="mt-2 text-sm text-red-500">{errors.price.message}</p>
+              ) : null}
+            </div>
+
+            <div>
+              <label className="label">
+                <span className="label-text">Status</span>
+              </label>
+              <select {...register("status")} className="select select-bordered w-full">
+                <option value="active">Active</option>
+                <option value="unavailable">Unavailable</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="label">
+              <span className="label-text">Recipe details</span>
+            </label>
+            <textarea
+              {...register("recipe", { required: "Recipe details are required" })}
+              className="textarea textarea-bordered min-h-28 w-full"
+              placeholder="Describe ingredients, texture, or serving notes"
+            />
+            {errors.recipe ? (
+              <p className="mt-2 text-sm text-red-500">{errors.recipe.message}</p>
+            ) : null}
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-[180px_1fr_auto] md:items-end">
+            <div>
+              <label className="label">
+                <span className="label-text">Current image</span>
+              </label>
+              <img
+                src={image}
+                alt={name}
+                className="h-28 w-full rounded-md object-cover"
+              />
+            </div>
+
+            <div>
+              <label className="label">
+                <span className="label-text">Replace image</span>
+              </label>
+              <input
+                {...register("image")}
+                type="file"
+                className="file-input file-input-bordered w-full"
+              />
+              <p className="mt-2 text-sm text-slate-500">
+                Leave blank to keep the current image.
+              </p>
+            </div>
+
+            <label className="flex min-h-12 items-center gap-3 rounded-lg border border-orange-200 px-4">
+              <input
+                {...register("featured")}
+                type="checkbox"
+                className="checkbox border-orange-300"
+              />
+              <span className="font-medium text-neutral">Featured item</span>
+            </label>
+          </div>
+
+          <div className="flex justify-end">
+            <button
+              disabled={isSubmitting}
+              className="btn border-0 bg-orange-400 text-neutral hover:bg-orange-500"
+            >
+              <FaUtensils />
+              {isSubmitting ? "Updating..." : "Update Item"}
+            </button>
+          </div>
         </div>
-    );
+      </form>
+    </div>
+  );
 };
 
 export default UpdateItem;

@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { MdOutlinePayment, MdOutlineShoppingCart } from "react-icons/md";
 import { TbBrandBooking } from "react-icons/tb";
+import LoadingState from "../../../components/Loading/LoadingState";
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useCart from "../../../hooks/useCart";
@@ -12,9 +13,9 @@ import profileFallback from "../../../assets/others/profile.png";
 const UserHome = () => {
   const { user } = useContext(AUthContext);
   const axiosSecure = useAxiosSecure();
-  const [cart] = useCart();
+  const [cart, , cartLoading] = useCart();
 
-  const { data: bookings = [] } = useQuery({
+  const { data: bookings = [], isPending: bookingsLoading } = useQuery({
     queryKey: ["bookings", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
@@ -25,7 +26,7 @@ const UserHome = () => {
     },
   });
 
-  const { data: payments = [] } = useQuery({
+  const { data: payments = [], isPending: paymentsLoading } = useQuery({
     queryKey: ["payments", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
@@ -55,9 +56,14 @@ const UserHome = () => {
     },
   ];
 
+  const isLoading = cartLoading || bookingsLoading || paymentsLoading;
+
   return (
     <div>
-      <SectionTitle heading="User Home" subHeading="Your Bistro Boss space" />
+      <SectionTitle heading="User Home" subHeading="Your Forkly space" />
+      {isLoading ? (
+        <LoadingState label="Loading your dashboard" />
+      ) : (
       <div className="grid gap-6 lg:grid-cols-[320px_1fr]">
         <div className="rounded-lg bg-orange-100 p-6 text-center">
           <img
@@ -66,7 +72,7 @@ const UserHome = () => {
             alt={user?.displayName || "User"}
           />
           <h2 className="mt-4 text-2xl font-bold">
-            {user?.displayName || "Bistro Boss Guest"}
+            {user?.displayName || "Forkly Guest"}
           </h2>
           <p className="break-all text-slate-600">{user?.email}</p>
           <Link to="/order/salad" className="btn mt-6 bg-orange-400 text-black">
@@ -87,6 +93,7 @@ const UserHome = () => {
           ))}
         </div>
       </div>
+      )}
     </div>
   );
 };

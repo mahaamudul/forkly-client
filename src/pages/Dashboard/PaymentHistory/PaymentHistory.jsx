@@ -3,12 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useContext } from "react";
 import { AUthContext } from "../../../provider/AuthProvider";
+import { TableLoadingRow } from "../../../components/Loading/LoadingState";
 
 const PaymentHistory = () => {
     const { user } = useContext(AUthContext)
     const axiosSecure = useAxiosSecure();
 
-    const { data: payments = [] } = useQuery({
+    const { data: payments = [], isPending } = useQuery({
         queryKey: ['payments', user?.email],
         enabled: !!user?.email,
         queryFn: async () => {
@@ -32,12 +33,22 @@ const PaymentHistory = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {payments.map((payment, index) => <tr key={payment._id}>
+                        {isPending ? (
+                            <TableLoadingRow colSpan={4} label="Loading payments" />
+                        ) : payments.length ? (
+                            payments.map((payment, index) => <tr key={payment._id}>
                             <th>{index + 1}</th>
                             <td>${payment.price}</td>
                             <td>{payment.transactionId}</td>
                             <td>{payment.status}</td>
-                        </tr>)}
+                        </tr>)
+                        ) : (
+                            <tr>
+                                <td colSpan="4" className="py-8 text-center text-slate-500">
+                                    No payments found.
+                                </td>
+                            </tr>
+                        )}
                         
                     </tbody>
                 </table>

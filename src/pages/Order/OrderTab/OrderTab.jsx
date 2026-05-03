@@ -1,21 +1,13 @@
 import FoodCard from "../../../components/FoodCard/FoodCard";
+import LoadingState from "../../../components/Loading/LoadingState";
 
 const OrderTab = ({ item, loading }) => {
   if (loading) {
     return (
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {[1, 2, 3, 4, 5, 6].map((loader) => (
-          <div key={loader} className="rounded-lg border border-base-300 bg-base-100 p-4">
-            <div className="skeleton h-48 w-full rounded-md"></div>
-            <div className="mt-5 space-y-3">
-              <div className="skeleton h-5 w-2/3"></div>
-              <div className="skeleton h-4 w-full"></div>
-              <div className="skeleton h-4 w-5/6"></div>
-              <div className="skeleton h-10 w-full"></div>
-            </div>
-          </div>
-        ))}
-      </div>
+      <LoadingState
+        label="Loading menu items"
+        description="Fresh category items are being prepared."
+      />
     );
   }
 

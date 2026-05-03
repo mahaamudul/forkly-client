@@ -1,11 +1,12 @@
 import { Navigate } from "react-router-dom";
+import LoadingState from "../../../components/Loading/LoadingState";
 import useAdmin from "../../../hooks/useAdmin";
 
 const DashboardHome = () => {
   const [isAdmin, isAdminLoading] = useAdmin();
 
   if (isAdminLoading) {
-    return <progress className="progress w-56"></progress>;
+    return <LoadingState label="Opening dashboard" variant="page" />;
   }
 
   return (

@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { MdOutlineDeleteForever } from "react-icons/md";
+import { TableLoadingRow } from "../../../components/Loading/LoadingState";
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { AUthContext } from "../../../provider/AuthProvider";
@@ -11,7 +12,7 @@ const MyBookings = () => {
   const { user } = useContext(AUthContext);
   const axiosSecure = useAxiosSecure();
 
-  const { data: bookings = [], refetch } = useQuery({
+  const { data: bookings = [], refetch, isPending } = useQuery({
     queryKey: ["bookings", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
@@ -64,7 +65,10 @@ const MyBookings = () => {
             </tr>
           </thead>
           <tbody>
-            {bookings.map((booking, index) => (
+            {isPending ? (
+              <TableLoadingRow colSpan={6} label="Loading bookings" />
+            ) : bookings.length ? (
+              bookings.map((booking, index) => (
               <tr key={booking._id}>
                 <th>{index + 1}</th>
                 <td>{booking.date}</td>
@@ -79,7 +83,14 @@ const MyBookings = () => {
                   </button>
                 </td>
               </tr>
-            ))}
+            ))
+            ) : (
+              <tr>
+                <td colSpan="6" className="py-8 text-center text-slate-500">
+                  No reservations found.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

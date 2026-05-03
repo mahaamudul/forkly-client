@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AUthContext } from "../../provider/AuthProvider";
 import Swal from "sweetalert2";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -11,6 +11,7 @@ const FoodCard = ({ item }) => {
   const { name, image, price, recipe,_id } = item;
   const axiosSecure=useAxiosSecure()
   const [,refetch]=useCart()
+  const [isAdding, setIsAdding] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -20,6 +21,7 @@ const FoodCard = ({ item }) => {
 
   const handleFoodCart = () => {
     if (user && user.email) {
+      setIsAdding(true);
       const cartInfo={
         menuId:_id,
         email:user.email ,
@@ -52,6 +54,7 @@ const FoodCard = ({ item }) => {
         });
         refetch();
       })
+      .finally(() => setIsAdding(false))
       
       
 
@@ -86,10 +89,11 @@ const FoodCard = ({ item }) => {
         <p className="mt-3 flex-1 text-sm leading-6 text-slate-600">{recipe}</p>
         <button
           onClick={handleFoodCart}
+          disabled={isAdding}
           className="btn mt-5 w-full rounded-md border border-orange-300 bg-orange-50 text-neutral hover:border-orange-400 hover:bg-orange-400 hover:text-neutral"
         >
           <FaCartPlus className="text-orange-500" />
-          Order Now
+          {isAdding ? "Adding..." : "Order Now"}
         </button>
       </div>
     </article>
