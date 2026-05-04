@@ -1,6 +1,10 @@
 import { useContext, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { MdLogout, MdOutlineDashboard, MdOutlineShoppingCart } from "react-icons/md";
+import {
+  MdLogout,
+  MdOutlineDashboard,
+  MdOutlineShoppingCart,
+} from "react-icons/md";
 import { FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
 import { AUthContext } from "../../../provider/AuthProvider";
 import useCart from "../../../hooks/useCart";
@@ -38,16 +42,14 @@ const Navbar = () => {
           ]
         : []),
     ],
-    [user]
+    [user],
   );
 
   const isActive = (item) => item.match(location.pathname);
 
   const linkClasses = (active) =>
     `px-3 py-2 text-sm font-medium transition ${
-      active
-        ? "text-orange-300"
-        : "text-white hover:text-orange-200"
+      active ? "text-orange-300" : "text-white hover:text-orange-200"
     }`;
 
   const handleLogout = async () => {
@@ -78,14 +80,14 @@ const Navbar = () => {
             <Link
               to="/"
               onClick={handleNavClick}
-              className="flex items-center gap-3 rounded-md"
+              className="flex items-end gap-3 rounded-md"
             >
               <img
                 className="h-9 w-9 rounded-full object-cover"
                 src={logo}
                 alt="Forkly"
               />
-              <span className="hidden h-9 items-center sm:flex">
+              <span className="hidden h-9 sm:flex items-end">
                 <span className="font-cinzel text-lg font-bold leading-none md:text-xl">
                   Forkly
                 </span>
